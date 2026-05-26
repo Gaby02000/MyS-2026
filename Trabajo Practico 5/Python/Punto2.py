@@ -26,7 +26,7 @@ def calcular_proyecto():
     acceso_inferior = F +G
     ruta_vehiculo = acceso_medio + G
     tiempo_total = max(acceso_superior, ruta_vehiculo, acceso_inferior)
-    return (tiempo_total, acceso_superior, acceso_medio, acceso_inferior)
+    return tiempo_total, acceso_superior, acceso_medio, acceso_inferior
 
 def calcular_ic(promedios):
     media = np.mean(promedios)
@@ -34,7 +34,7 @@ def calcular_ic(promedios):
     error_estandar = (desvio / np.sqrt(N_EXPERIMENTOS))
     ic_inferior = (media - Z_99 * error_estandar)
     ic_superior = (media + Z_99 * error_estandar)
-    return (media, ic_inferior, ic_superior)
+    return media, ic_inferior, ic_superior
 
 def mostrar_resultados(media, ic_inf, ic_sup, criticidad):
     print("==========================================")
@@ -72,7 +72,7 @@ def main():
     for experimento in range(N_EXPERIMENTOS):
         tiempos_experimento = []
         for corrida in range(N_CORRIDAS):
-            (tiempo_total, acceso_superior, acceso_medio, acceso_inferior) = calcular_proyecto()
+            tiempo_total, acceso_superior, acceso_medio, acceso_inferior = calcular_proyecto()
             tiempos_totales.append(tiempo_total)
             tiempos_experimento.append(tiempo_total)
             maximo = max(acceso_superior, acceso_medio, acceso_inferior)
@@ -86,7 +86,7 @@ def main():
         promedio = np.mean(tiempos_experimento)
         promedios_experimentos.append(promedio)
     media, ic_inf, ic_sup = calcular_ic(promedios_experimentos)
-    porcentaje_criticidad = (criticidad /TOTAL_CORRIDAS) * 100
+    porcentaje_criticidad = criticidad /TOTAL_CORRIDAS * 100
     mostrar_resultados(media,ic_inf, ic_sup, porcentaje_criticidad)
     graficar_histograma_corridas(tiempos_totales)
     graficar_histograma_promedios(promedios_experimentos)
